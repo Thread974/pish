@@ -28,7 +28,6 @@ if [ "$FORWARD" = "0" ] ; then
 
 	# start a dedicated dnsmasq instance
 	sudo apt install dnsmasq-base ||:
-	sudo service dnsmasq stop >> /dev/null
 	sudo dnsmasq -d -i $IFACELOCAL -z -F "10.1.1.12,10.1.1.15,255.255.0.0,10.1.255.255" &
 
 	echo "Enabling ip forwarding from $IFACENET to $IFACELOCAL"
@@ -42,7 +41,6 @@ else
 	sudo iptables -t nat -D POSTROUTING -o $IFACEINET -j MASQUERADE
 
 	sudo killall dnsmasq
-	sudo service dnsmasq start
 
 	sudo ip addr del 10.1.1.2/16 dev $IFACELOCAL
 fi
