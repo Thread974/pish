@@ -1,11 +1,15 @@
 #!/bin/bash
 
-if [ "$#" -lt "2" ] ; then
+if [ "$#" = "2" ] ; then
+	IFACEINET=$1
+	IFACELOCAL=$2
+elif expr $(basename $0) : "share-.*-.*\.sh" ; then
+	IFACEINET=$(expr $(basename $0) : "share-\(.*\)-.*\.sh")
+	IFACELOCAL=$(expr $(basename $0) : "share-.*-\(.*\)\.sh")
+else
 	echo "usage: $0 <if_inet> <if_lan>"
 	exit 1
 fi
-IFACEINET=$1
-IFACELOCAL=$2
 
 # On pi, reduce wlan MTU to avoid a connection stall problem
 # https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=1194o83
